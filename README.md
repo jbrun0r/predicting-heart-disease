@@ -1095,7 +1095,6 @@ sns.boxplot(data = ds_copy)
 
 
 
-    <AxesSubplot:>
 
 
 
