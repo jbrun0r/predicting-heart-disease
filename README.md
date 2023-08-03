@@ -1,103 +1,75 @@
-# Machine Learning - Predição de Doenças Cardíacas.
+# Machine Learning - Heart Disease Prediction.
 
-        - Análise Exploratória de Dados;
-        - dataset 'heart.csv';
-        - Correlações, Remoção de outilers, duplicates, [...];
-        - Aplicação de Diferentes Algoritmos de Aprendizagem de Máquina;
-        - Observação dos Resultados.
+- Exploratory Data Analysis;
+- Dataset 'heart.csv';
+- Correlations, Outlier Removal, Duplicate Handling, [...];
+- Application of Different Machine Learning Algorithms;
+- Observation of Results.
 
-# Prelúdio
-
+## Prelude
 
 ```python
-# Manipulação e análise de dados.
 import pandas as pd
-
-# Processamento de grandes, multi-dimensionais arranjos e matrizes;
-# Coleção de funções matemáticas de alto nível.
 import numpy as np
-
-# Criação de gráficos e visualizações de dados em geral.
 import matplotlib.pyplot as plt
 %matplotlib inline
-
-# Visualização de dados Python baseada em matplotlib;
-# Interface de alto nível para desenhar gráficos estatísticos atraentes e informativos.
 import seaborn as sns
-
-# Algoritmos fundamentais para computação científica em Python.
 from scipy import stats
-
-```
-
-
-```python
-# Dividir matrizes ou matrizes em subconjuntos aleatórios de treinamento e teste.
 from sklearn.model_selection import train_test_split
-
-# Pontuação de classificação de precisão;
-# Relatório de texto mostrando as principais métricas de classificação;
-# Calcular a matriz de confusão para avaliar a precisão de uma classificação.
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
-
-# Algoritmos de Machine Learning a serem implementados.
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.naive_bayes import BernoulliNB
-from sklearn.naive_bayes import GaussianNB
-
-# Padronização das features removendo a média e dimensionando para a variação da unidade.
+from sklearn.naive_bayes import BernoulliNB, GaussianNB
 from sklearn.preprocessing import StandardScaler
 ```
-
 ### Heart Disease Dataset:
 
 
 ```python
-# Consumindo o Dataset.
-ds = pd.read_csv('/home/jbrun0r/Documentos/scripts/datasets/heart.csv')
-ds_copy = pd.read_csv('/home/jbrun0r/Documentos/scripts/datasets/heart.csv')
+ds = pd.read_csv('/datasets/heart.csv')
+ds_copy = pd.read_csv('/datasets/heart.csv')
 ```
 
-##### age: Idade do paciente
-##### sex: Sexo do paciente
-    0: F;
-    1: M.
-##### cp : tipo de dor no peito no peito
-    1: angina típica;
-    2: angina atípica;
-    3: dor não anginosa;
-    4: assintomático.
-##### trtbps : pressão arterial em repouso (em mm Hg)
-##### chol : colestoral em mg/dl obtido via sensor de IMC(Colesterol sérico em mg/dl.)
-##### fbs : (glicemia em jejum > 120 mg/dl) (Açúcar no sangue em jejum > 120 mg/dl = 0 | < 120mg/dl = 1.)
-    1 = verdadeiro;
-    0 = falso.
-##### rest_ecg : Resultados eletrocardiográficos em repouso
-    0: normal;
-    1: com anormalidade da onda ST-T (inversões da onda T e/ou elevação ou depressão do segmento ST > 0,05 mV);
-    2: mostrando provável ou definitiva hipertrofia ventricular esquerda pelos critérios de Estes.
-##### thalach : Frequência cardíaca máxima atingida
-    0 = menos chance de ataque cardíaco
-    1 = mais chance de ataque cardíaco
-##### exng: Angina induzida pelo exercício
-    1 = sim
-    0 = não
-##### Oldpeak: Depressão do segmento ST induzida pelo exercício em relação ao repouso
-##### slp: Inclinação do segmento ST de pico do exercício.
-##### caa: número de vasos principais
-    0-3
-##### thal: Talassemia: 
-    1 = normal;
-    2 = problema corrigido; 
-    3 = problema reversível.
-##### output:
-    0 = não possui doença cardíaca;
-    1 = possui doença cardíaca.
-##### Importante: Angina é o nome dado para a dor no peito causada pela diminuição do fluxo de sangue no coração, o que é chamado de isquemia. Ela não é uma doença, mas está relacionada a outras condições que provocam obstrução nas artérias coronárias, responsáveis por levar sangue ao coração.
+This repository contains a dataset about patients related to heart diseases.
+
+### Column Descriptions
+
+- **age:** Patient's age.
+- **sex:** Patient's gender.
+  - 0: Female (F).
+  - 1: Male (M).
+
+- **cp:** Chest pain type.
+  - 1: Typical angina.
+  - 2: Atypical angina.
+  - 3: Non-anginal pain.
+  - 4: Asymptomatic.
+
+- **trtbps:** Resting blood pressure (in mm Hg).
+
+- **chol:** Cholesterol in mg/dl obtained via IMC sensor (Serum cholesterol in mg/dl).
+
+- **fbs:** Fasting blood sugar level.
+  - 1: Fasting blood sugar > 120 mg/dl.
+  - 0: Fasting blood sugar <= 120 mg/dl.
+
+- **rest_ecg:** Resting electrocardiographic results.
+  - 0: Normal.
+  - 1: ST-T wave abnormality (inverted T wave and/or ST segment elevation or depression > 0.05 mV).
+  - 2: Probable or definite left ventricular hypertrophy by Estes' criteria.
+
+- **thalach:** Maximum heart rate achieved.
+  - 0: Lower chance of heart attack.
+  - 1: Higher chance of heart attack.
+
+- **exng:** Exercise induced angina.
+  - 1: Yes.
+  - 0: No.
+
+- **Oldpeak:** ST depression induced by exercise relative to rest.
 
 
 ```python
@@ -222,15 +194,11 @@ ds.head()
 
 # Pré-Processamento
 
+Below we can check if there are null records in our database, and luckily none were found.
 
 ```python
 ds.isnull().sum()
-#Abaixo podemos verificar se existem registros nulos em nossa base de dados, 
-# e para a nossa sorte nenhum foi encontrado.
 ```
-
-
-
 
     age         0
     sex         0
@@ -250,13 +218,10 @@ ds.isnull().sum()
 
 
 
-
+We can see that we also have no negative values in the data.
 ```python
 ds.min()
-# Podemos ver que também não possuímos valores negativos nos dados.
 ```
-
-
 
 
     age          29.0
@@ -277,10 +242,10 @@ ds.min()
 
 
 
+We can see that there is 'a' duplicate line and we will remove it so as not to overfit
 
 ```python
 ds_copy.duplicated().sum()
-# Podemos ver que há 'uma' linha duplicada e tiraremos para não causar overfit
 ```
 
 
@@ -291,8 +256,8 @@ ds_copy.duplicated().sum()
 
 
 
+Removing the duplication
 ```python
-#Removendo a duplicação
 ds = ds.drop_duplicates()
 ds_copy = ds_copy.drop_duplicates()
 ```
@@ -480,294 +445,9 @@ ds.describe().transpose()
 </div>
 
 
-
-###### count: Total de registros existentes.
-###### mean: valor da média.
-###### std: desvio padrão.
-###### min e max: valores mínimos e máximos.
-###### 25%: ou primeiro quartil, que corresponde aos primeiros 25% dos valores de nossos registros.
-###### 50%: ou mediana, que corresponde aos primeiros 50% dos valores de nossos registros, essa é a nossa medida central dos dados. Metade dos nossos valores são menores que a mediana e a outra metade é maior a este valor. A mediana é uma opção muito interessante quando comparado a média, pois ela não sofre com valores discrepantes.
-###### 75%: ou terceiro quartil, que corresponde aos primeiros 75% dos valores de nossos registros.
-
-
-
+Observing the correlation of features;
+"Correlation does not imply Causality.".
 ```python
-ds.corr()
-```
-
-
-
-
-
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>age</th>
-      <th>sex</th>
-      <th>cp</th>
-      <th>trtbps</th>
-      <th>chol</th>
-      <th>fbs</th>
-      <th>restecg</th>
-      <th>thalachh</th>
-      <th>exng</th>
-      <th>oldpeak</th>
-      <th>slp</th>
-      <th>caa</th>
-      <th>thall</th>
-      <th>output</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>age</th>
-      <td>1.000000</td>
-      <td>-0.094962</td>
-      <td>-0.063107</td>
-      <td>0.283121</td>
-      <td>0.207216</td>
-      <td>0.119492</td>
-      <td>-0.111590</td>
-      <td>-0.395235</td>
-      <td>0.093216</td>
-      <td>0.206040</td>
-      <td>-0.164124</td>
-      <td>0.302261</td>
-      <td>0.065317</td>
-      <td>-0.221476</td>
-    </tr>
-    <tr>
-      <th>sex</th>
-      <td>-0.094962</td>
-      <td>1.000000</td>
-      <td>-0.051740</td>
-      <td>-0.057647</td>
-      <td>-0.195571</td>
-      <td>0.046022</td>
-      <td>-0.060351</td>
-      <td>-0.046439</td>
-      <td>0.143460</td>
-      <td>0.098322</td>
-      <td>-0.032990</td>
-      <td>0.113060</td>
-      <td>0.211452</td>
-      <td>-0.283609</td>
-    </tr>
-    <tr>
-      <th>cp</th>
-      <td>-0.063107</td>
-      <td>-0.051740</td>
-      <td>1.000000</td>
-      <td>0.046486</td>
-      <td>-0.072682</td>
-      <td>0.096018</td>
-      <td>0.041561</td>
-      <td>0.293367</td>
-      <td>-0.392937</td>
-      <td>-0.146692</td>
-      <td>0.116854</td>
-      <td>-0.195356</td>
-      <td>-0.160370</td>
-      <td>0.432080</td>
-    </tr>
-    <tr>
-      <th>trtbps</th>
-      <td>0.283121</td>
-      <td>-0.057647</td>
-      <td>0.046486</td>
-      <td>1.000000</td>
-      <td>0.125256</td>
-      <td>0.178125</td>
-      <td>-0.115367</td>
-      <td>-0.048023</td>
-      <td>0.068526</td>
-      <td>0.194600</td>
-      <td>-0.122873</td>
-      <td>0.099248</td>
-      <td>0.062870</td>
-      <td>-0.146269</td>
-    </tr>
-    <tr>
-      <th>chol</th>
-      <td>0.207216</td>
-      <td>-0.195571</td>
-      <td>-0.072682</td>
-      <td>0.125256</td>
-      <td>1.000000</td>
-      <td>0.011428</td>
-      <td>-0.147602</td>
-      <td>-0.005308</td>
-      <td>0.064099</td>
-      <td>0.050086</td>
-      <td>0.000417</td>
-      <td>0.086878</td>
-      <td>0.096810</td>
-      <td>-0.081437</td>
-    </tr>
-    <tr>
-      <th>fbs</th>
-      <td>0.119492</td>
-      <td>0.046022</td>
-      <td>0.096018</td>
-      <td>0.178125</td>
-      <td>0.011428</td>
-      <td>1.000000</td>
-      <td>-0.083081</td>
-      <td>-0.007169</td>
-      <td>0.024729</td>
-      <td>0.004514</td>
-      <td>-0.058654</td>
-      <td>0.144935</td>
-      <td>-0.032752</td>
-      <td>-0.026826</td>
-    </tr>
-    <tr>
-      <th>restecg</th>
-      <td>-0.111590</td>
-      <td>-0.060351</td>
-      <td>0.041561</td>
-      <td>-0.115367</td>
-      <td>-0.147602</td>
-      <td>-0.083081</td>
-      <td>1.000000</td>
-      <td>0.041210</td>
-      <td>-0.068807</td>
-      <td>-0.056251</td>
-      <td>0.090402</td>
-      <td>-0.083112</td>
-      <td>-0.010473</td>
-      <td>0.134874</td>
-    </tr>
-    <tr>
-      <th>thalachh</th>
-      <td>-0.395235</td>
-      <td>-0.046439</td>
-      <td>0.293367</td>
-      <td>-0.048023</td>
-      <td>-0.005308</td>
-      <td>-0.007169</td>
-      <td>0.041210</td>
-      <td>1.000000</td>
-      <td>-0.377411</td>
-      <td>-0.342201</td>
-      <td>0.384754</td>
-      <td>-0.228311</td>
-      <td>-0.094910</td>
-      <td>0.419955</td>
-    </tr>
-    <tr>
-      <th>exng</th>
-      <td>0.093216</td>
-      <td>0.143460</td>
-      <td>-0.392937</td>
-      <td>0.068526</td>
-      <td>0.064099</td>
-      <td>0.024729</td>
-      <td>-0.068807</td>
-      <td>-0.377411</td>
-      <td>1.000000</td>
-      <td>0.286766</td>
-      <td>-0.256106</td>
-      <td>0.125377</td>
-      <td>0.205826</td>
-      <td>-0.435601</td>
-    </tr>
-    <tr>
-      <th>oldpeak</th>
-      <td>0.206040</td>
-      <td>0.098322</td>
-      <td>-0.146692</td>
-      <td>0.194600</td>
-      <td>0.050086</td>
-      <td>0.004514</td>
-      <td>-0.056251</td>
-      <td>-0.342201</td>
-      <td>0.286766</td>
-      <td>1.000000</td>
-      <td>-0.576314</td>
-      <td>0.236560</td>
-      <td>0.209090</td>
-      <td>-0.429146</td>
-    </tr>
-    <tr>
-      <th>slp</th>
-      <td>-0.164124</td>
-      <td>-0.032990</td>
-      <td>0.116854</td>
-      <td>-0.122873</td>
-      <td>0.000417</td>
-      <td>-0.058654</td>
-      <td>0.090402</td>
-      <td>0.384754</td>
-      <td>-0.256106</td>
-      <td>-0.576314</td>
-      <td>1.000000</td>
-      <td>-0.092236</td>
-      <td>-0.103314</td>
-      <td>0.343940</td>
-    </tr>
-    <tr>
-      <th>caa</th>
-      <td>0.302261</td>
-      <td>0.113060</td>
-      <td>-0.195356</td>
-      <td>0.099248</td>
-      <td>0.086878</td>
-      <td>0.144935</td>
-      <td>-0.083112</td>
-      <td>-0.228311</td>
-      <td>0.125377</td>
-      <td>0.236560</td>
-      <td>-0.092236</td>
-      <td>1.000000</td>
-      <td>0.160085</td>
-      <td>-0.408992</td>
-    </tr>
-    <tr>
-      <th>thall</th>
-      <td>0.065317</td>
-      <td>0.211452</td>
-      <td>-0.160370</td>
-      <td>0.062870</td>
-      <td>0.096810</td>
-      <td>-0.032752</td>
-      <td>-0.010473</td>
-      <td>-0.094910</td>
-      <td>0.205826</td>
-      <td>0.209090</td>
-      <td>-0.103314</td>
-      <td>0.160085</td>
-      <td>1.000000</td>
-      <td>-0.343101</td>
-    </tr>
-    <tr>
-      <th>output</th>
-      <td>-0.221476</td>
-      <td>-0.283609</td>
-      <td>0.432080</td>
-      <td>-0.146269</td>
-      <td>-0.081437</td>
-      <td>-0.026826</td>
-      <td>0.134874</td>
-      <td>0.419955</td>
-      <td>-0.435601</td>
-      <td>-0.429146</td>
-      <td>0.343940</td>
-      <td>-0.408992</td>
-      <td>-0.343101</td>
-      <td>1.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div>
-
-
-
-
-```python
-# Observando a correlação das features;
-# "Correlação não implica em Causalidade.".
 plt.figure(figsize=(16,8))
 sns.heatmap(ds.corr(), annot = True, cmap='Blues')
 ```
@@ -1068,24 +748,21 @@ for c in ds_copy.columns:
     
 
 
-## Análise:
 
-##### caa: existem entradas incorrentas, segundo o link da kaggle para este dataset, caa deveria se comportar de 0 a 3, porém observamos que há um tipo de entrada incorreta, trataremos isto:
-
+## Analysis:
+caa: There are incorrect entries, according to the Kaggle link for this dataset, caa should range from 0 to 3, but we observed a type of incorrect entry. We will handle this with the following Python code:
 
 ```python
 ds.caa.loc[ds.caa == 4] = 0
 ```
 
-##### tha: existem entradas incorrentas, segundo o link da kaggle para este dataset, thall deveria se comportar de 1 a 3, porém observamos que há um tipo de entrada incorreta, trataremos isto:
-
+tha: There are incorrect entries, according to the Kaggle link for this dataset, thall should range from 1 to 3, but we observed a type of incorrect entry. We will handle this with the following Python code:
 
 ```python
 ds.thall.loc[ds.thall == 0] = 2
 ```
 
-##### Podemos observar outliers nas numericas com os histogramas, para evidenciar confira o boxplot:
-
+We can observe outliers in the numerical variables by using histograms. To highlight them, let's check the boxplot with the following Python code:
 
 ```python
 plt.figure(figsize=(18,8))
@@ -1104,7 +781,7 @@ sns.boxplot(data = ds_copy)
     
 
 
-### Tratamento dos outliers
+## Treatment of outliers
 
 ##### trtbps: 
 
@@ -1114,11 +791,8 @@ plt.figure(figsize=(12,4))
 sns.boxplot(ds_copy.trtbps)
 plt.show
 
-# Tratamento dos outliers
-#ds.trtbps.quantile(0.97)
 ds.trtbps.loc[ds.trtbps > 170] = 170
 
-# Plotando novo boxplot após o tratamento de outliers
 plt.figure(figsize=(12,4))
 sns.boxplot(ds.trtbps)
 plt.show()
@@ -1157,16 +831,12 @@ ds.trtbps.describe().transpose()
 
 
 ```python
-# Há presença de outliers
 plt.figure(figsize=(12,4))
 sns.boxplot(ds_copy.chol)
 plt.show()
 
-# Tratando os outliers
-#ds_copy.chol.quantile(0.98338871)
 ds.chol.loc[ds.chol > 360] = 360
 
-# Plotagem com outliers tratados
 plt.figure(figsize=(12,4))
 sns.boxplot(ds.chol)
 plt.show()
@@ -1209,16 +879,10 @@ ds.chol.describe().transpose()
 plt.figure(figsize=(12, 4))
 sns.boxplot(ds_copy.thalachh)
 
-# Tratamento do outlier
-# Limite Inferior do boxplot = Primeiro Quartil (– 1,5 * (Terceiro Quartil – Primeiro Quartil))
 limite_inferior = ( ds.thalachh.quantile(0.25)) -1.5 * (ds.thalachh.quantile(0.75)-ds.thalachh.quantile(0.25))
-# o limite_inferior é igual a 84.75
-# quase ds_copy.thalachh.quantile(0.00254)
 
 ds.thalachh.loc[ds.thalachh < limite_inferior] = limite_inferior
-# Outlier tratado
 
-# Plot novo boxplot
 plt.figure(figsize=(12, 4))
 sns.boxplot(ds.thalachh)
 plt.show()
@@ -1254,7 +918,7 @@ ds.thalachh.describe().transpose()
 
 
 
-### Outliers e Entradas-Incorretas devidamente tratadas
+### Outliers and Incorrect-Inputs properly handled
 
 
 ```python
@@ -1269,9 +933,9 @@ plt.show()
     
 
 
-##### numericas = 
+##### numeric =
     ['age', 'trtbps', 'chol', 'thalachh', 'oldpeak']
-##### categoricas = 
+##### categories =
     ['sex', 'cp', 'fbs', 'restecg', 'exng', 'slp', 'caa', 'thall']
 
 
@@ -1582,16 +1246,16 @@ ds1
 
 
 
-# Aprendizagem
+# Learning
 
 Function learn:
 
-        Dividir o dataset em subconjuntos de treinamento e teste;
-        test size = 33% e treino size = 67%;
-        Normatizar as Features numéricas com StandardScaler;
-        Invocar Algoritmos de Machine Learning;
-        Gerar Relatório mostrando as principais métricas de classificação;
-        Calcular a matriz de confusão para avaliar a precisão de uma classificação.
+         Split the dataset into training and testing subsets;
+         test size = 33% and training size = 67%;
+         Normalize numerical features with StandardScaler;
+         Invoke Machine Learning Algorithms;
+         Generate Report showing key ranking metrics;
+         Calculate the confusion matrix to assess the accuracy of a classification.
 
 
 
@@ -1604,8 +1268,8 @@ def learn(dataset, algoritmo, opt = 2):
 
     X_train, X_test, y_train, y_test = train_test_split( X, y, test_size=0.33, random_state=42)
 
-    # Padronização das features numéricas com StandardScaler;
-    # Os modelos Não Baseados em Árvores de Decisão se beneficiam mais deste tipo de padronização.
+    # Standardization of numerical features with StandardScaler;
+    # Models Not Based on Decision Trees benefit most from this type of standardization.
     scaler = StandardScaler()
 
     columns_scaler = ['age', 'trtbps', 'chol', 'thalachh', 'oldpeak']
@@ -1641,7 +1305,7 @@ def learn(dataset, algoritmo, opt = 2):
     return score_train, score_test
 ```
 
-### Invocando Algoritmos de Machine Learning:
+### Invoking Machine Learning Algorithms:
 
      KNeighborsClassifier:
 
@@ -1650,9 +1314,9 @@ def learn(dataset, algoritmo, opt = 2):
 kn_train, kn_test = learn(ds1, KNeighborsClassifier)
 ```
 
-    Acurácia:
-         Treino = 89.6%
-         Teste = 84.0%
+    Accuracy:
+         Train = 89.6%
+         Test = 84.0%
     
     Classification:
                    precision    recall  f1-score   support
@@ -1680,9 +1344,9 @@ kn_train, kn_test = learn(ds1, KNeighborsClassifier)
 log_train, log_test = learn(ds1, LogisticRegression,0)
 ```
 
-    Acurácia:
-         Treino = 86.63%
-         Teste = 87.0%
+    Accuracy:
+         Train = 86.63%
+         Test = 87.0%
     
     Classification:
                    precision    recall  f1-score   support
@@ -1710,9 +1374,9 @@ log_train, log_test = learn(ds1, LogisticRegression,0)
 tree_train, tree_test = learn(ds1, DecisionTreeClassifier)
 ```
 
-    Acurácia:
-         Treino = 100.0%
-         Teste = 75.0%
+    Accuracy:
+         Train = 100.0%
+         Test = 75.0%
     
     Classification:
                    precision    recall  f1-score   support
@@ -1740,9 +1404,9 @@ tree_train, tree_test = learn(ds1, DecisionTreeClassifier)
 ada_train, ada_test = learn(ds1, AdaBoostClassifier)
 ```
 
-    Acurácia:
-         Treino = 95.54%
-         Teste = 83.0%
+    Accuracy:
+         Train = 95.54%
+         Test = 83.0%
     
     Classification:
                    precision    recall  f1-score   support
@@ -1770,9 +1434,9 @@ ada_train, ada_test = learn(ds1, AdaBoostClassifier)
 rand_train, rand_test = learn(ds1, RandomForestClassifier)
 ```
 
-    Acurácia:
-         Treino = 100.0%
-         Teste = 85.0%
+    Accuracy:
+         Train = 100.0%
+         Test = 85.0%
     
     Classification:
                    precision    recall  f1-score   support
@@ -1801,9 +1465,9 @@ mlp_train, mlp_test = learn(ds1, MLPClassifier)
 ```
 
 
-    Acurácia:
-         Treino = 88.12%
-         Teste = 89.0%
+    Accuracy:
+         Train = 88.12%
+         Test = 89.0%
     
     Classification:
                    precision    recall  f1-score   support
@@ -1831,9 +1495,9 @@ mlp_train, mlp_test = learn(ds1, MLPClassifier)
 bnb_train, bnb_test = learn(ds1, BernoulliNB)
 ```
 
-    Acurácia:
-         Treino = 86.14%
-         Teste = 83.0%
+    Accuracy:
+         Train = 86.14%
+         Test = 83.0%
     
     Classification:
                    precision    recall  f1-score   support
@@ -1861,9 +1525,9 @@ bnb_train, bnb_test = learn(ds1, BernoulliNB)
 gnb_train, gnb_test = learn(ds1, GaussianNB)
 ```
 
-    Acurácia:
-         Treino = 79.7%
-         Teste = 81.0%
+    Accuracy:
+         Train = 79.7%
+         Test = 81.0%
     
     Classification:
                    precision    recall  f1-score   support
@@ -1884,7 +1548,7 @@ gnb_train, gnb_test = learn(ds1, GaussianNB)
     
 
 
-### Criando um rank das Acurácias Test:
+### Creating a Rank of Test Accuracies:
 
 
 ```python
@@ -1919,7 +1583,7 @@ rank = pd.DataFrame(dados)
 rank.sort_values(by='Accuracy Test', ascending=False, inplace = True)
 ```
 
-# Rank da Aprendizagem:
+# Learning Rank:
 
 
 ```python
