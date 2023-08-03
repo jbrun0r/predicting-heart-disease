@@ -24,6 +24,7 @@ The performance of each model will be evaluated using various metrics such as ac
 
 The Heart Disease Prediction Project aims to provide a valuable tool for early detection and risk assessment of heart disease in patients. By leveraging machine learning techniques and thorough data analysis, this project seeks to contribute to better healthcare outcomes by assisting medical professionals in making more informed decisions and improving patient care.
 
+# Implementation
 
 ```python
 import pandas as pd
