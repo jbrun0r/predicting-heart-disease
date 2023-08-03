@@ -1,12 +1,29 @@
-# Machine Learning - Heart Disease Prediction.
+# Heart Disease Prediction - Machine Learning.
 
-- Exploratory Data Analysis;
-- Dataset 'heart.csv';
-- Correlations, Outlier Removal, Duplicate Handling, [...];
-- Application of Different Machine Learning Algorithms;
-- Observation of Results.
+## Overview
 
-## Prelude
+The Heart Disease Prediction Project is a machine learning project aimed at developing a model to predict the presence of heart disease in patients based on various health-related features. The dataset used in this project contains information about patients' age, gender, chest pain type, resting blood pressure, cholesterol levels, fasting blood sugar, electrocardiographic results, maximum heart rate achieved, exercise-induced angina, and other relevant attributes.
+
+## Goal
+
+The primary goal of this project is to build a reliable machine learning model capable of accurately classifying patients as either having heart disease or not. By utilizing historical data and applying various machine learning algorithms, the model will be trained to recognize patterns and relationships between the input features and the target variable (presence of heart disease).
+
+## Data Exploration and Preprocessing
+
+The project begins with an exploratory data analysis (EDA) to gain insights into the dataset and identify any data quality issues. During this phase, data cleaning steps will be performed to handle missing values and correct any anomalies in certain columns such as 'caa' and 'thall', where incorrect entries were observed.
+
+## Machine Learning Algorithms
+
+To achieve the best predictive performance, several machine learning algorithms will be applied, including K-Nearest Neighbors (KNN), Decision Trees, Logistic Regression, AdaBoost, Random Forest, Neural Networks, and Naive Bayes. Each algorithm will be trained, validated, and fine-tuned using cross-validation techniques to optimize their hyperparameters.
+
+## Evaluation
+
+The performance of each model will be evaluated using various metrics such as accuracy, precision, recall, and F1-score. The model with the highest accuracy and robust generalization capability will be selected as the final prediction model for heart disease.
+
+## Conclusion
+
+The Heart Disease Prediction Project aims to provide a valuable tool for early detection and risk assessment of heart disease in patients. By leveraging machine learning techniques and thorough data analysis, this project seeks to contribute to better healthcare outcomes by assisting medical professionals in making more informed decisions and improving patient care.
+
 
 ```python
 import pandas as pd
